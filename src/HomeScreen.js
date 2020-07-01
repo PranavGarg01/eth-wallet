@@ -1,5 +1,5 @@
 import React,{useContext} from "react";
-// import {ScreenContext} from './App'
+import { ScreenContext } from "./contexts/ScreenContext";
 import { withStyles, Divider, Button } from "@material-ui/core";
 
 const styles = {
@@ -12,16 +12,17 @@ const styles = {
 		flex: "1",
 	},
 	divider: {
+        // border : "2px ",
 		width: "85%",
 	},
 	btns: {
-		width: "70%",
+        width: "70%",
+        height : "4rem",
 		margin: "15% 0",
 	},
 };
 function HomeScreen(props) {
-    // const {screen,setScreen} = useContext(ScreenContext);
-    // console.log(x)
+    const {setScreen} = useContext(ScreenContext);
 	const { classes } = props;
 	return (
 		<div className={classes.home}>
@@ -39,7 +40,7 @@ function HomeScreen(props) {
 				className={classes.btns}
 				variant='outlined'
 				color='secondary'
-				// onClick={() => setScreen('register')}
+				onClick={() => setScreen('register')}
 			>
 				REGISTER
 			</Button>

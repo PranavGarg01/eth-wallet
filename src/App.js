@@ -1,5 +1,5 @@
-import React,{useContext,createContext,useState} from 'react';
-import	{ ScreenProvider,  ScreenContext } from './contexts/ScreenContext';
+import React from 'react';
+import	{ ScreenProvider } from './contexts/ScreenContext';
 import {withStyles} from '@material-ui/core'
 import Screen from './Screen';
 const styles = {

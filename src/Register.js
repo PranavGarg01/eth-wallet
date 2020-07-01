@@ -1,10 +1,8 @@
 import React,{useState} from 'react';
 import Web3 from "web3";
 import { withStyles,Button, TextField,Divider,Typography } from "@material-ui/core";
-const url = 'https://ropsten.infura.io/v3/2263eef71b3f42e4bd6dc77debba5750';
-var web3 = new Web3(url);
-var xx = web3.eth.accounts.wallet;
-
+// import {url} from './config/constants';
+var web3 = new Web3(process.env.REACT_APP_INFURA_URL);
 const styles = {
 	form: {
 		minHeight: "100%",
@@ -33,16 +31,13 @@ const styles = {
 };
 function PasswordComponent(props) {
     window.web3 = web3; //TODO : REMOVE IT IN Production
-    const [user,setUser] = useState("");
     const [pass,setPass] = useState("");
     const createWallet = (pass) => {
         console.log("Password is " + pass);
         var wallet = web3.eth.accounts.wallet;
-        // wallet.clear();
         wallet.create(1);
         console.log(wallet)
-        console.log(typeof xx[0])
-        wallet.save(pass,pass);
+        wallet.save("ethWallet");
     }
     const {classes} = props;
     return (
@@ -58,14 +53,7 @@ function PasswordComponent(props) {
 				className={classes.form}
 			>
 				<TextField
-					className={classes.textField}
-					margin='normal'
 					autoFocus={true}
-					label='Username'
-					value={user}
-					onChange={(e) => setUser(e.target.value)}
-				/>
-				<TextField
 					className={classes.textField}
 					margin='normal'
 					label='Password'
@@ -73,7 +61,6 @@ function PasswordComponent(props) {
 					onChange={(e) => setPass(e.target.value)}
 				/>
 				<Button
-                    
 					variant='contained'
 					color='primary'
 					onClick={() => createWallet(pass)}
