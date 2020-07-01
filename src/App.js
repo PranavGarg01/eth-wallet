@@ -1,26 +1,20 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React,{useContext,createContext,useState} from 'react';
+import	{ ScreenProvider,  ScreenContext } from './contexts/ScreenContext';
+import {withStyles} from '@material-ui/core'
+import Screen from './Screen';
+const styles = {
+	App: { marginTop: "2rem", textAlign: "center" },
+};
 
-function App() {
+function App(props) {
+	const {classes} = props;
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+		<div className={classes.App} fixed='true'>
+				<ScreenProvider>
+					<Screen />
+				</ScreenProvider>
+		</div>
   );
 }
 
-export default App;
+export default withStyles(styles)(App);
