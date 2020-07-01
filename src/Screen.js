@@ -1,8 +1,10 @@
 import React, { useContext } from 'react';
 import {Container,CssBaseline,withStyles} from '@material-ui/core'
-import HomeScreen from './HomeScreen';
+import AuthScreen from './AuthScreen';
 import Register from "./Register";
+import Login from "./Login";
 import { ScreenContext } from './contexts/ScreenContext';
+import UserHomeScreen from './UserHomeScreen';
 const styles = {
 	box: {
 		maxWidth: "370px",
@@ -32,13 +34,17 @@ function Screen(props) {
 }
 function getScreen(val) {
     switch (val) {
-		case "home":
-			return <HomeScreen />;
+		case "auth":
+			return <AuthScreen />;
 		case "register":
-            return <Register />
+			return <Register />;
+		case "login":
+			return <Login />;
+		case "userHome":
+			return <UserHomeScreen />;
 		default:
-            console.log("error")
-            break;
+			console.log("error");
+			break;
 	}
 }
 export default withStyles(styles)(Screen)

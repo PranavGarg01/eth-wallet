@@ -3,7 +3,7 @@ import React,{createContext,useState} from 'react';
 export const ScreenContext = createContext();
 
 export function ScreenProvider(props) {
-    const [screen,setScreen] = useState('home');
+    const [screen,setScreen] = useState('auth');
     return (
         <ScreenContext.Provider value={{screen:screen,setScreen:setScreen}}>
             {props.children}

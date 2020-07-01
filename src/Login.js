@@ -1,6 +1,7 @@
-import React,{useState} from 'react';
+import React,{useState, useContext} from "react";
 import Web3 from "web3";
 import { withStyles,Button, TextField,Divider,Typography } from "@material-ui/core";
+import { ScreenContext } from "./contexts/ScreenContext";
 const web3 = new Web3(process.env.REACT_APP_INFURA_URL);
 const styles = {
 	form: {
@@ -28,21 +29,25 @@ const styles = {
 		margin: "1rem",
 	},
 };
-function Register(props) {
-    window.web3 = web3; //TODO : REMOVE IT IN Production
+
+function Login(props) {
+	const {setScreen} = useContext(ScreenContext);
     const [pass,setPass] = useState("");
-    const createWallet = (pass) => {
-        console.log("Password is " + pass);
-        var wallet = web3.eth.accounts.wallet;
-        wallet.create(1);
-        console.log(wallet)
-        wallet.save(pass,"ethWallet");
-    }
-    const {classes} = props;
+	const {classes} = props;
+	const loadWallet = (pass) => {
+		var wallet = web3.eth.accounts.wallet;
+		try {
+			wallet.load(pass,"ethWallet");
+			setScreen('userHome');
+		} catch (e) {
+			console.log(e);
+			//Here show error in the TextField and design it properly
+		}
+	} 
     return (
 		<>
 			<Typography variant='h4' className={classes.title}>
-				Register
+				Login
 			</Typography>
 			<Divider className={classes.divider} />
 			<form
@@ -62,14 +67,15 @@ function Register(props) {
 				<Button
 					variant='contained'
 					color='primary'
-					onClick={() => createWallet(pass)}
+					onClick={() => loadWallet(pass)}
                     className={classes.createButton}
                     fullWidth={true}
 				>
-					Create Wallet
+					Load Wallet
 				</Button>
 			</form>
 		</>
 	);
 }
-export default withStyles(styles)(Register);
+
+export default withStyles(styles)(Login);

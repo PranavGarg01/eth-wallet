@@ -21,7 +21,7 @@ const styles = {
 		margin: "15% 0",
 	},
 };
-function HomeScreen(props) {
+function AuthScreen(props) {
     const {setScreen} = useContext(ScreenContext);
 	const { classes } = props;
 	return (
@@ -31,6 +31,7 @@ function HomeScreen(props) {
 				className={classes.btns}
 				variant='outlined'
 				color='primary'
+				onClick={() => setScreen('login')}
 			>
 				LOGIN
 			</Button>
@@ -48,4 +49,4 @@ function HomeScreen(props) {
 	);
 }
 
-export default withStyles(styles)(HomeScreen);
+export default withStyles(styles)(AuthScreen);
