@@ -8,14 +8,15 @@ import UserHomeScreen from './UserHomeScreen';
 const styles = {
 	box: {
 		maxWidth: "370px",
-		padding: "1rem",
-		minHeight: "70vh",
+		padding: "0",
+		minHeight: "80vh",
 		textAlign: "center",
 		boxShadow: "3px 2px 12px -4px rgba(0,0,0,0.75)",
 		display: "flex",
 		flexDirection : "column",
 		backgroundColor : "white",
-		alignItems : "center"
+		alignItems : "center",
+		flex : "1"
 	},
 	
 };

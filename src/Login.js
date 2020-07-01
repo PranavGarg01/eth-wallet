@@ -1,8 +1,9 @@
 import React,{useState, useContext} from "react";
-import Web3 from "web3";
+// import Web3 from "web3";
 import { withStyles,Button, TextField,Divider,Typography } from "@material-ui/core";
 import { ScreenContext } from "./contexts/ScreenContext";
-const web3 = new Web3(process.env.REACT_APP_INFURA_URL);
+// let web3 = new Web3(process.env.REACT_APP_INFURA_URL);
+// window.web3 = web3; //TODO : REMOVE IT IN Production
 const styles = {
 	form: {
 		minHeight: "100%",
@@ -32,14 +33,18 @@ const styles = {
 };
 
 function Login(props) {
-	const {setScreen} = useContext(ScreenContext);
+
+	const {setScreen,web3,setWeb3} = useContext(ScreenContext);
 	const [pass,setPass] = useState("");
 	const [passError,setError] = useState(false);
 	const {classes} = props;
-	const loadWallet = (pass) => {
+	const handleForm = (event) => {
+		event.preventDefault();
 		var wallet = web3.eth.accounts.wallet;
 		try {
 			wallet.load(pass,"ethWallet");
+			setWeb3(web3)
+			console.log(wallet);
 			setScreen('userHome');
 		} catch (e) {
 			console.log(e);
@@ -63,11 +68,13 @@ function Login(props) {
 				margin='normal'
 				// fullWidth={true}
 				className={classes.form}
+				onSubmit={handleForm}
 			>
 				<TextField
 					autoFocus={true}
 					className={classes.textField}
 					margin='normal'
+					type="password"
 					label='Password'
 					value={pass}
 					error={passError}
@@ -80,7 +87,8 @@ function Login(props) {
 					disabled={pass === "" ? true : false}
 					variant='contained'
 					color='primary'
-					onClick={() => loadWallet(pass)}
+					type="submit"
+					
 					className={classes.createButton}
 					// fullWidth={true}
 				>
