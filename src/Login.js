@@ -21,6 +21,7 @@ const styles = {
 	createButton: {
 		marginTop: "2rem",
 		height: "4.5rem",
+		width: "80%",
 	},
 	divider: {
 		width: "85%",
@@ -32,7 +33,8 @@ const styles = {
 
 function Login(props) {
 	const {setScreen} = useContext(ScreenContext);
-    const [pass,setPass] = useState("");
+	const [pass,setPass] = useState("");
+	const [passError,setError] = useState(false);
 	const {classes} = props;
 	const loadWallet = (pass) => {
 		var wallet = web3.eth.accounts.wallet;
@@ -42,7 +44,13 @@ function Login(props) {
 		} catch (e) {
 			console.log(e);
 			//Here show error in the TextField and design it properly
+			setError(true);
 		}
+	}
+	const passInput = (e) => {
+		setError(false);
+
+		setPass(e.target.value);
 	} 
     return (
 		<>
@@ -62,14 +70,19 @@ function Login(props) {
 					margin='normal'
 					label='Password'
 					value={pass}
-					onChange={(e) => setPass(e.target.value)}
+					error={passError}
+					helperText={
+						passError ? "Incorrect password for the wallet" : ""
+					}
+					onChange={passInput}
 				/>
 				<Button
+					disabled={pass === "" ? true : false}
 					variant='contained'
 					color='primary'
 					onClick={() => loadWallet(pass)}
-                    className={classes.createButton}
-                    fullWidth={true}
+					className={classes.createButton}
+					// fullWidth={true}
 				>
 					Load Wallet
 				</Button>

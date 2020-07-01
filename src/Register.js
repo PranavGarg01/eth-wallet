@@ -20,6 +20,7 @@ const styles = {
 	createButton: {
 		marginTop: "2rem",
 		height: "4.5rem",
+		width: "80%",
 	},
 	divider: {
 		width: "85%",
@@ -31,8 +32,8 @@ const styles = {
 function Register(props) {
     window.web3 = web3; //TODO : REMOVE IT IN Production
     const [pass,setPass] = useState("");
-    const createWallet = (pass) => {
-        console.log("Password is " + pass);
+    const createWallet = (pass) => { 
+		console.log("Password is " + pass);
         var wallet = web3.eth.accounts.wallet;
         wallet.create(1);
         console.log(wallet)
@@ -60,11 +61,12 @@ function Register(props) {
 					onChange={(e) => setPass(e.target.value)}
 				/>
 				<Button
+					disabled={(pass==='') ? true : false}
 					variant='contained'
 					color='primary'
 					onClick={() => createWallet(pass)}
                     className={classes.createButton}
-                    fullWidth={true}
+                    
 				>
 					Create Wallet
 				</Button>
