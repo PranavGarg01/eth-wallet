@@ -9,14 +9,19 @@ const styles = {
 	box: {
 		maxWidth: "370px",
 		padding: "0",
-		minHeight: "80vh",
+		minHeight : "80vh",
+		maxHeight: "85vh",
 		textAlign: "center",
 		boxShadow: "3px 2px 12px -4px rgba(0,0,0,0.75)",
 		display: "flex",
 		flexDirection : "column",
 		backgroundColor : "white",
 		alignItems : "center",
-		flex : "1"
+		flex : "1",
+		overflowY : "scroll",
+		"&::-webkit-scrollbar" : {
+			display: "none",
+		},
 	},
 	
 };
