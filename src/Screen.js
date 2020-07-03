@@ -1,10 +1,12 @@
-import React, { useContext } from 'react';
+import React, { useContext,useState } from 'react';
 import {Container,CssBaseline,withStyles} from '@material-ui/core'
 import AuthScreen from './AuthScreen';
 import Register from "./Register";
 import Login from "./Login";
 import { ScreenContext } from './contexts/ScreenContext';
 import UserHomeScreen from './UserHomeScreen';
+import NewTx from './NewTx';
+import ConfirmTx from './ConfirmTx'
 const styles = {
 	box: {
 		maxWidth: "370px",
@@ -26,8 +28,38 @@ const styles = {
 	
 };
 function Screen(props) {
-    const {screen} = useContext(ScreenContext)
-    const {classes} = props;
+	const getScreen= (val)=>  {
+		switch (val) {
+			case "auth":
+				return <AuthScreen />;
+			case "register":
+				return <Register />;
+			case "login":
+				return <Login />;
+			case "userHome":
+				return <UserHomeScreen />;
+			case 'newTx':
+				return <NewTx createTx={createTx}/>;
+			case 'confirmTx':
+				return <ConfirmTx newTx={newTx}/>;
+			default:
+				console.log("error");
+				break;
+		}
+	}
+	const {screen,web3} = useContext(ScreenContext);
+	const [newTx,setNewTx] = useState({
+		addr: '',
+		val: 0
+	});
+	const {classes} = props;
+	const createTx = (addr, val) => {
+		console.log(addr + " " + val);
+		setNewTx({
+			addr:addr,
+			val: val
+		})
+	};
     var newScreen = getScreen(screen);
     return (
 		<>
@@ -38,19 +70,5 @@ function Screen(props) {
 		</>
 	);
 }
-function getScreen(val) {
-    switch (val) {
-		case "auth":
-			return <AuthScreen />;
-		case "register":
-			return <Register />;
-		case "login":
-			return <Login />;
-		case "userHome":
-			return <UserHomeScreen />;
-		default:
-			console.log("error");
-			break;
-	}
-}
+
 export default withStyles(styles)(Screen)

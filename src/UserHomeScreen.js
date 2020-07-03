@@ -25,7 +25,7 @@ const styles = {
 	divider: {
 		// border : "2px ",
 		width: "100%",
-		margin: "0.1rem 0",
+		marginTop: "0.1rem",
 	},
 	account: {
 		width: "100%",
@@ -63,7 +63,7 @@ const styles = {
 	},
 };
 function UserHomeScreen(props) {
-    const {web3,setWeb3} = useContext(ScreenContext);
+    const {setScreen,web3,setWeb3} = useContext(ScreenContext);
 	const [balance,setBalance] = useState(0);
 	const [tx,setTx] = useState({txns : [],isFetching : false});
     const {classes} = props;
@@ -119,13 +119,14 @@ function UserHomeScreen(props) {
 							size='large'
 							variant='outlined'
 							className={classes.btns}
+							onClick={()=>setScreen('newTx')}
 						>
 							Send
 						</Button>
 					</div>
 				</div>
 				<div className={classes.txText}>
-					<Typography variant='caption'>Transactions</Typography>
+					<Typography variant='caption'>TRANSACTIONS</Typography>
 				</div>
 			</div>
 			<Divider className={classes.divider} />

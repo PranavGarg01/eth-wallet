@@ -22,7 +22,7 @@ const styles = {
 	createButton: {
 		marginTop: "2rem",
 		height: "4.5rem",
-		width: "80%",
+		width: "80%", 
 	},
 	divider: {
 		width: "85%",
@@ -85,7 +85,7 @@ function Login(props) {
 				/>
 				<Button
 					disabled={pass === "" ? true : false}
-					variant='contained'
+					variant="contained"
 					color='primary'
 					type="submit"
 					

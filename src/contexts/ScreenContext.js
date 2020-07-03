@@ -3,8 +3,9 @@ import Web3 from 'web3';
 export const ScreenContext = createContext();
 
 export function ScreenProvider(props) {
-    const [screen,setScreen] = useState('auth');
     let web3 = new Web3(process.env.REACT_APP_INFURA_URL);
+    const [screen,setScreen] = useState('auth');
+    
     const [web,setWeb3] = useState(web3)
 
     return (
