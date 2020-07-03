@@ -57,7 +57,7 @@ function Screen(props) {
 		console.log(addr + " " + val);
 		setNewTx({
 			addr:addr,
-			val: val
+			val: parseFloat(val)
 		})
 	};
     var newScreen = getScreen(screen);

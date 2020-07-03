@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState,useEffect } from "react";
 import { ScreenContext } from "./contexts/ScreenContext";
 import {
 	Divider,
@@ -7,9 +7,7 @@ import {
 	Button,
 	TextField,
 } from "@material-ui/core";
-import InputAdornment from "@material-ui/core/InputAdornment";
-import CheckCircleRoundedIcon from "@material-ui/icons/CheckCircleRounded";
-import CancelRoundedIcon from "@material-ui/icons/CancelRounded";
+import axios from 'axios';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEthereum } from "@fortawesome/free-brands-svg-icons";
 
@@ -28,7 +26,7 @@ const styles = {
 	divider: {
 		// border : "2px ",
 		width: "100%",
-		marginTop: "0.1rem",
+		// marginTop: "0.1rem",
 	},
 	form: {
 		// minHeight: "100%",
@@ -54,10 +52,10 @@ const styles = {
 		display: "flex",
 		flexDirection: "column",
 		justifyContent: "center",
-		alignItems : "flex-start",
-		padding:"2rem",
-		flexGrow : "0.2",
-		backgroundColor : "rgba(229,228,228,0.3)"
+		alignItems: "flex-start",
+		padding: "2rem",
+		flexGrow: "0.2",
+		backgroundColor: "rgba(229,228,228,0.3)",
 	},
 	btnsContainer: {
 		marginTop: "1rem",
@@ -70,25 +68,92 @@ const styles = {
 		display: "flex",
 		flexDirection: "column",
 		flex: "1",
-		justifyContent: "center",
+		justifyContent: "flex-start",
 		alignItems: "center",
+		padding: "5%",
 	},
+	btnText: {
+		border: "1px solid grey",
+		borderRadius: "4px",
+		lineHeight: "inherit",
+		padding: "0.1rem 0.4rem",
+		fontWeight: "lighter",
+	},
+	ethIcon: {
+		fontSize: "1.7rem",
+		verticalAlign: "baseline",
+		color : "black",
+		marginRight : ".5rem"
+	},
+	amt: {
+		fontSize: "2.25rem",
+		verticalAlign: "baseline",
+	},
+	gasFee: {
+		display: "flex",
+		width: "100%",
+		justifyContent: "space-between",
+		margin: "5% 0",
+		color: "#5d5d5d",
+		textTransform: "uppercase",
+		fontSize: "0.75rem",
+		fontWeight: "500",
+	},
+	label : {
+		margin : "auto 0"
+	}
 };
 function ConfirmTx(props) {
 	const { setScreen, web3, setWeb3 } = useContext(ScreenContext);
 	const { classes, newTx } = props;
-
+	const [gasPrice,setGasPrice] = useState(0);
+	useEffect(() => {
+		axios.get(
+			'https://ethgasstation.info/api/ethgasAPI.json'
+		).then(function (response) {
+			console.log(response.data);
+			var gas = parseInt(response.data.average);
+			gas = gas/10;
+			console.log(gas);
+			gas = gas * 21;
+			gas = gas/1000000;
+			console.log(gas);
+			setGasPrice(gas);
+		  });
+	}, [newTx])
+	const confirmTx = ()=> {
+		console.log('doing tx');
+		var gas;
+		gas = gasPrice * 1000000;
+		gas = gas/21;
+		console.log(gas);
+		var gasWei = String(gas) + "000000000";
+		web3.eth.sendTransaction({
+			from : web3.eth.accounts.wallet[0].address,
+			to : newTx.addr,
+			value : web3.utils.toWei(String(newTx.val)),
+			gas : 21000,
+			gasPrice : gasWei
+		})
+		.on('transactionHash', function(hash){
+			console.log(hash);
+			setScreen('userHome')
+		})
+	}
 	return (
 		<div className={classes.box}>
 			<div className={classes.account}>
-				<Typography variant='h6'>Send ETH</Typography>
-
-				<Typography variant='body2' className={classes.address}>
-					{web3.eth.accounts.wallet[0].address.substring(0, 6) +
-						"..." +
-						web3.eth.accounts.wallet[0].address.substr(-4)}
+				<Typography variant='overline' className={classes.btnText}>
+					Send Ether
 				</Typography>
-				
+
+				<Typography variant='body2' className={classes.amt}>
+					<FontAwesomeIcon
+						icon={faEthereum}
+						className={classes.ethIcon}
+					/>{" "}
+					{newTx.val}
+				</Typography>
 			</div>
 			<form
 				color='primary'
@@ -98,7 +163,33 @@ function ConfirmTx(props) {
 			>
 				<Divider className={classes.divider} />
 				<div className={classes.inputs}>
-					Here goes the gas values
+					<div className={classes.gasFee}>
+						<Typography variant='button' className={classes.label}>
+							Gas Fee
+						</Typography>
+						<div className={classes.amt}>
+							<FontAwesomeIcon
+								icon={faEthereum}
+								className={classes.ethIcon}
+							/>
+							{( parseFloat(gasPrice))}
+						</div>
+					</div>
+					<Divider
+						className={classes.divider}
+					/>
+					<div className={classes.gasFee}>
+						<Typography variant='button' className={classes.label}>
+							Total
+						</Typography>
+						<div className={classes.amt}>
+							<FontAwesomeIcon
+								icon={faEthereum}
+								className={classes.ethIcon}
+							/>
+							{parseFloat((gasPrice+ newTx.val).toFixed(10))}
+						</div>
+					</div>
 				</div>
 				<div className={classes.btnsContainer}>
 					<Divider className={classes.divider} />
@@ -112,18 +203,18 @@ function ConfirmTx(props) {
 						onClick={() => setScreen("userHome")}
 						// fullWidth={true}
 					>
-						CANCEL
+						REJECT
 					</Button>
 					<Button
 						// disabled={pass === "" ? true : false}
 						variant='outlined'
 						color='primary'
-						type='submit'
+						// type='submit'
 						size='large'
 						className={classes.btns}
-						// onClick={()=>setScreen('confirmTx')}
+						onClick={confirmTx}
 					>
-						NEXT
+						CONFIRM
 					</Button>
 				</div>
 			</form>

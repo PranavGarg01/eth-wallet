@@ -63,16 +63,18 @@ function Txns(props) {
     const {web3,setWeb3} = useContext(ScreenContext);
     const {tx,classes} = props;
     const op =
-		tx.from === web3.eth.accounts.wallet[0].address ? (
+		tx.from.toUpperCase() === web3.eth.accounts.wallet[0].address.toUpperCase() ? (
 			<>
 				<CallMadeRoundedIcon className={classes.icon} />{" "}
 				<div className={classes.iconRight}>
-					<div>Sent</div>{" "}
-					{tx.confirmations > 1 ? (
-						<div className={classes.confirmed}>Confirmed</div>
-					) : (
-						<div className={classes.pending}>Pending</div>
-					)}
+					<Typography variant="subtitle1">Sent</Typography>{" "}
+					<div>
+						{tx.confirmations > 1 ? (
+							<div className={classes.confirmed}>Confirmed</div>
+						) : (
+							<div className={classes.pending}>Pending</div>
+						)}
+					</div>
 				</div>
 			</>
 		) : (

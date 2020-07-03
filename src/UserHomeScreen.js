@@ -134,7 +134,7 @@ function UserHomeScreen(props) {
 				{/* Transactions */}
 				{!tx.isFetching ? tx.txns.map(
 					(t) => 
-					<Txns key={t.hash}tx={t} />
+					<Txns key={t.hash} tx={t} />
 					) : ""}
 			</div>
 		</>
