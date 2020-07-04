@@ -1,6 +1,7 @@
-import React,{useState} from 'react';
+import React,{useState, useContext} from 'react';
 import Web3 from "web3";
 import { withStyles,Button, TextField,Divider,Typography } from "@material-ui/core";
+import { ScreenContext } from './contexts/ScreenContext';
 const web3 = new Web3(process.env.REACT_APP_INFURA_URL);
 const styles = {
 	form: {
@@ -30,14 +31,16 @@ const styles = {
 	},
 };
 function Register(props) {
-    window.web3 = web3; //TODO : REMOVE IT IN Production
+	window.web3 = web3; //TODO : REMOVE IT IN Production
+	const {setScreen} = useContext(ScreenContext);
     const [pass,setPass] = useState("");
     const createWallet = (pass) => { 
 		console.log("Password is " + pass);
         var wallet = web3.eth.accounts.wallet;
         wallet.create(1);
         console.log(wallet)
-        wallet.save(pass,"ethWallet");
+		wallet.save(pass,"ethWallet");
+		setScreen('login');
     }
     const {classes} = props;
     return (
